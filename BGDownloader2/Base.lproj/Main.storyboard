@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BGDownloader2" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +17,81 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pj7-JE-QoY">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="112" id="7aJ-P5-U1V"/>
+                                </constraints>
+                                <state key="normal" title="Begin Download"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="7aJ-P5-U1V"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="7aJ-P5-U1V"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="beginDownloadTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="B5T-Gs-J5h"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BhO-qS-O6j">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Pqh-6f-674"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="3c3-FA-ciW"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="BhO-qS-O6j" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="1uk-OS-Lkh"/>
+                            <constraint firstItem="BhO-qS-O6j" firstAttribute="top" secondItem="Pj7-JE-QoY" secondAttribute="bottom" constant="8" symbolic="YES" id="OI6-Iz-bbA"/>
+                            <constraint firstAttribute="trailing" secondItem="BhO-qS-O6j" secondAttribute="trailing" id="WnP-2e-cl0"/>
+                            <constraint firstItem="Pj7-JE-QoY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="emd-AE-wst"/>
+                            <constraint firstItem="BhO-qS-O6j" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ihN-hR-OLb"/>
+                            <constraint firstItem="Pj7-JE-QoY" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="kcV-ki-TpL"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Pj7-JE-QoY"/>
+                                <exclude reference="BhO-qS-O6j"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="emd-AE-wst"/>
+                                <exclude reference="kcV-ki-TpL"/>
+                                <exclude reference="1uk-OS-Lkh"/>
+                                <exclude reference="OI6-Iz-bbA"/>
+                                <exclude reference="WnP-2e-cl0"/>
+                                <exclude reference="ihN-hR-OLb"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Pj7-JE-QoY"/>
+                                <include reference="BhO-qS-O6j"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="emd-AE-wst"/>
+                                <include reference="kcV-ki-TpL"/>
+                                <include reference="1uk-OS-Lkh"/>
+                                <include reference="OI6-Iz-bbA"/>
+                                <include reference="WnP-2e-cl0"/>
+                                <include reference="ihN-hR-OLb"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="BhO-qS-O6j" id="jB0-Od-yBM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="244.5" y="305.25"/>
         </scene>
     </scenes>
 </document>
