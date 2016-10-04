@@ -39,30 +39,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
-    @IBAction func beginDownloadTapped(sender: AnyObject) {
+    @IBAction func beginDownloadTapped(_ sender: AnyObject) {
         
         tableData = []
         tableView.reloadData()
         
         // Unfortunately Swift 3.0 will not let this work...
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.low).async {
             
             var bTask : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
             
-            bTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
-                UIApplication.sharedApplication().endBackgroundTask(bTask)
+            bTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+                UIApplication.shared.endBackgroundTask(bTask)
                 bTask = UIBackgroundTaskInvalid
             })
             
-            for(var i = 0; i < self.dataURLs.count; i++) {
+            for(i in 0 ..< self.dataURLs.count) {
                 
                 print("time left")
-                print(UIApplication.sharedApplication().backgroundTimeRemaining)
+                print(UIApplication.shared.backgroundTimeRemaining)
                 // More Swift 3.0 changes! Must find a solution to all this!
                 // But once we find this background time we have left
                 // we would use it to determine what we will do if it dies before finishing
                 
-                if (UIApplication.sharedApplication().backgroundTimeRemaining < 2.0) {
+                if (UIApplication.shared.backgroundTimeRemaining < 2.0) {
                     print("Not enough time, skipping")
                     break
                     // This break will jump out of the for loop entirely
@@ -72,8 +72,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 print("getting image")
                 
-                let url = NSURL(string: self.dataURLs[i])
-                let imageData = NSData(contentsOfURL: url!)
+                let url = URL(string: self.dataURLs[i])
+                let imageData = try? Data(contentsOf: url!)
                 let image = UIImage(data: imageData!)
                 // Note this is probably not a good way to do it IRL
                 // Might not work because never quite certain IRL if you'll get something back
@@ -83,16 +83,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 // Nor will this work, but WE SHALL FIND A WAY!
                 // Async would also work too if we wanted
                 // However if things got hectic memory-wise, sync helps pause the background
-                dispatch_sync(dispatch_get_main_queue(), {
-                    let indexPath : NSIndexPath = NSIndexPath(forRow: i, inSection: 0)
-                    self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                DispatchQueue.main.sync(execute: {
+                    let indexPath : IndexPath = IndexPath(row: i, section: 0)
+                    self.tableView.insertRows(at: [indexPath], with: UITableViewRowAnimation.left)
                     // this sort of modification to the tableView must be done in the main thread
                     // just like android, some things simply gotta be done on the main thread
                 })
                 
                 print("got image")
                 
-                NSThread.sleepForTimeInterval(3)
+                Thread.sleep(forTimeInterval: 3)
                 
                 print("quick nap time")
                 
@@ -100,7 +100,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             print("All done")
             
-            UIApplication.sharedApplication().endBackgroundTask(bTask)
+            UIApplication.shared.endBackgroundTask(bTask)
             bTask = UIBackgroundTaskInvalid
             // Good practice to end it at the very end of your async queue call
         }
@@ -111,24 +111,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableData.count
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50.0
     }
     
     let cellId = "cellId1"
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(cellId)
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: cellId)
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: cellId)
         }
         
-        cell?.imageView?.image = tableData[indexPath.row]
-        cell?.textLabel?.text = dataURLs[indexPath.row]
+        cell?.imageView?.image = tableData[(indexPath as NSIndexPath).row]
+        cell?.textLabel?.text = dataURLs[(indexPath as NSIndexPath).row]
         
         return cell!
     }
