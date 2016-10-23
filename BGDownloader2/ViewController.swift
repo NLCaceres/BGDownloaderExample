@@ -178,7 +178,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: cellId)
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: cellId)
         }
         
         cell?.imageView?.image = tableData[(indexPath as NSIndexPath).row]
